@@ -1,0 +1,31 @@
+#Background: 
+#The Monitoring and Testing Team is tasked with reviewing data reported to the Federal Reserve
+#and reconciling against key verbiage in source documents
+#This program was to help the team quickly search through a PDF file to ensure key verbiage 
+#was found in source documentation and reconciliation
+
+import PyPDF2 as pd
+import re
+
+from PyPDF2 import PdfReader
+
+#read pdf file
+reader = PdfReader("TRECLG_Student_Manual v10-1_2022-2023 - Legal Update I&II.pdf")
+
+#get number of pages
+total_num_pages = len(reader.pages)
+print(f"Total Pages: {total_num_pages}\n")
+
+#Get Specific page from pdf file
+page = reader.pages[0]
+
+#String to search
+string = "§535.92 - Continuing Education Requirements"
+
+#Assign a page number to PDF file and search for string
+for page_number in range(total_num_pages):
+    page = reader.pages[page_number]
+    text = page.extract_text()
+    res_search = re.search(string, text)
+    if res_search != None:
+        print(f"Page: {page_number+1}")
